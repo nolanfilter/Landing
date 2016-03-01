@@ -52,8 +52,8 @@ public class GameManager : MonoBehaviour {
 			//counter --;
 			//if(counter <= 0){
 				crushPercent = true;
-				Debug.Log (plantsToCrush +" plant to crush");
-				Debug.Log (plantsToCrushEndPerc +" percentage");
+				//Debug.Log (plantsToCrush +" plant to crush");
+				//Debug.Log (plantsToCrushEndPerc +" percentage");
 			//}
 		}
 	}
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour {
 		//Debug.Log ("FINISH");
 		//print(plantsToCrush);
 		//print (plantsToCrush);
-		Debug.Log(plantsToCrush.ToString() + " plants left");
+		//Debug.Log(plantsToCrush.ToString() + " plants left");
 		if(Input.GetKeyDown(KeyCode.Escape)){
 			Application.Quit(); }
 

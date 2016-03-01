@@ -28,7 +28,7 @@ public class P_DustCreate : MonoBehaviour {
 	
 
 	IEnumerator StopParticles(){
-		Debug.Log ("STOP PARTICLES");
+		//Debug.Log ("STOP PARTICLES");
 		yield return new WaitForSeconds(.8f);
 		gameObject.GetComponent<ParticleSystem>().enableEmission=false;
 		if (kill){

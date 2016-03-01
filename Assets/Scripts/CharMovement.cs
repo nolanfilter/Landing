@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CharMovement : MonoBehaviour {
 	
+    public GameObject gizmoParticleSystemPrefab;
+
 	//public float speed = 10.0F;
     public float rotationSpeed;
 	public float playerXspeed;
@@ -15,7 +17,6 @@ public class CharMovement : MonoBehaviour {
 	public GameObject alienCutout;
 
 	public GameObject alienGizmo;
-	public GameObject alienGizmoPS;
 	float countdownG ;
 
 	GameObject grass;
@@ -32,135 +33,220 @@ public class CharMovement : MonoBehaviour {
 
 	public AudioClip DecoyDeploymentSound;
 
+    private InputController inputController;
+    private Vector2 movementVector = Vector2.zero;
+    private float yRotation = 0f;
 
+    void Awake()
+    {
+        inputController = GetComponent<InputController>();
 
-	//this is a new comment
-	
-	// Use this for initialization
-	void Start () {	
+        if( inputController == null )
+        {
+            Debug.LogError( "No input controller on " + gameObject.name );
+            enabled = false;
+        }
+    }
+
+    void OnEnable()
+    {
+        inputController.OnButtonDown += OnButtonDown;
+        inputController.OnButtonHeld += OnButtonHeld;
+        inputController.OnButtonUp += OnButtonUp;
+    }
+
+    void OnDisable()
+    {
+        inputController.OnButtonDown -= OnButtonDown;
+        inputController.OnButtonHeld -= OnButtonHeld;
+        inputController.OnButtonUp -= OnButtonUp;
+    }
+
+	void Start ()
+    {	
 		countdownG = 0;
 		alienGizmo.GetComponent<Renderer>().enabled = false;
-		//alienGizmoPS.renderer.enabled = false;
-		//alienGizmoPS.ParticleSystem.Play(false);
-		//alienGizmoPS.GetComponent<ParticleSystem>().Play(false);
 	}
 
 	
-	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        if( countdownG != 0 )
+        {
+            countdownG = Mathf.MoveTowards( countdownG, 0f, 0.1f );
 
-		if (transform.position.x >= maxX-1f){
-			transform.position = new Vector3(maxX-1.1f,transform.position.y,transform.position.z);
-		} else if (transform.position.x < minX+1f){
-			transform.position = new Vector3(minX+1.1f,transform.position.y,transform.position.z);
-		} else if(transform.position.z > maxZ-1f){
-			transform.position = new Vector3(transform.position.x,transform.position.y,maxZ-1.1f);
-		} else if (transform.position.z < minZ+1f){
-			transform.position = new Vector3(transform.position.x,transform.position.y,minZ+1.1f);
-		}
+            if( countdownG == 0 )
+            {
+                alienGizmo.GetComponent<Renderer>().enabled = false;
+            }
+        }
 
-		if(countdownG > 0){
-			countdownG -= .1f;
-		}
+        // CHECKS SPEED AND SETS DUST PARTICLES ACTIVE
+        alienCutout.SendMessage("SetSpeed", movementVector.y, SendMessageOptions.DontRequireReceiver);
 
-		if(countdownG <= 0){
-			alienGizmo.GetComponent<Renderer>().enabled = false;
+        if( movementVector.y <= .45 && movementVector.y >= -.45 && movementVector.y <= .45 && movementVector.y >= -.45 ){
+            //print("walking");
+            particlesDust.GetComponent<ParticleSystem>().enableEmission = false;
+        }
+        else
+        {
+            //print("running");
+            particlesDust.GetComponent<ParticleSystem>().enableEmission = true;
+        }
 
-			//alienGizmoPS.GetComponent<ParticleSystem>().Clear(true);
-			//alienGizmoPS.SetActive(false);
-		}
+        if( movementVector != Vector2.zero )
+        {
+            transform.Translate( movementVector.x, 0, movementVector.y );
+            movementVector = Vector2.zero;
 
-		if (Input.GetButtonDown("X_Button") && countdownG <= 0){
-			Debug.Log("x");
-			alienGizmo.GetComponent<Renderer>().enabled = true;
-			countdownG = 1f * Time.deltaTime;
+            ConstrainMovement();
+        }
 
-			alienGizmoPS.SetActive(true);
-			alienGizmoPS.GetComponent<ParticleSystem>().Play(true);
-			foreach (GameObject grass in GameObject.FindGameObjectsWithTag("Grass")) {
-				//grass = GameObject.Find("Grass(Clone)");
-				grass.SendMessage("ChangeLayer");
-				//grass.tag = "Grass";
-			}
-
-
-
-		}
-		
-		moveZ = Input.GetAxis("LJoy Y") * playerXspeed;
-		moveX = Input.GetAxis("LJoy X") * playerXspeed;
-		
-		moveZ *= Time.deltaTime;
-		moveX *= Time.deltaTime;
-		transform.Translate(moveX, 0, moveZ);
-		
-		float rotationY = Input.GetAxis("RJoy X") * rotationSpeed;
-		rotationY *= Time.deltaTime;
-		transform.Rotate (0, rotationY, 0);
-
-		alienCutout.SendMessage("SetSpeed", moveZ, SendMessageOptions.DontRequireReceiver);
-		
-		//GameObject.particleEmitter.emit = true;
-		//particlesystem.enableEmission = false;
-
-		//CHECKS SPEED AND SETS DUST PARTICLES ACTIVE
-
-		if (moveZ <= .45 && moveZ >= -.45 && moveX <= .45 && moveX >= -.45 ){
-			//print("walking");
-			particlesDust.GetComponent<ParticleSystem>().enableEmission = false;
-		}
-
-		if (moveZ > .45 || moveZ < -.45 || moveX > .45 || moveX < -.45){
-			//print("running");
-			particlesDust.GetComponent<ParticleSystem>().enableEmission = true;
-		}
-
-
-
-		////// CREATE DECOY
-		if (Input.GetButtonDown("L_Bumper")){
-			//Debug.Log("x");
-			if (activeClone==false){
-				GetComponent<AudioSource>().PlayOneShot(DecoyDeploymentSound);
-				GameObject clone = Instantiate(decoy, new Vector3(transform.position.x,
-			                                                transform.position.y-1,
-			                                                transform.position.z),
-			                    			Quaternion.identity) as GameObject;
-
-				GameObject clonePart = Instantiate(decoyPart, new Vector3(transform.position.x,
-			                                                  	transform.position.y,
-			                                                  	transform.position.z),
-			                               Quaternion.identity) as GameObject;
-				clonePart.tag = "DustDecoy";
-				//clonePart.transform.Rotate  (270,0,0);
-			//clone.transform.Rotate  (270,0,0);
-				activeClone = true;
-			}
-		}
-
-
-
-
+        if( yRotation != 0f )
+        {
+            transform.Rotate ( 0, yRotation, 0 );
+            yRotation = 0f;
+        }
 	}
 
 	public void ActiveClone(){
 		activeClone = false;
 	}
 
+    private void ConstrainMovement()
+    {
+        if (transform.position.x >= maxX-1f){
+            transform.position = new Vector3(maxX-1.1f,transform.position.y,transform.position.z);
+        } else if (transform.position.x < minX+1f){
+            transform.position = new Vector3(minX+1.1f,transform.position.y,transform.position.z);
+        } else if(transform.position.z > maxZ-1f){
+            transform.position = new Vector3(transform.position.x,transform.position.y,maxZ-1.1f);
+        } else if (transform.position.z < minZ+1f){
+            transform.position = new Vector3(transform.position.x,transform.position.y,minZ+1.1f);
+        }
+    }
 
-		
-		//Input.GetAxis("Horizontal") * playerXSpeed * Time.deltaTime;
-		
-}
-	
-	/*public class MoveForwardBackward : MonoBehaviour {
-    void Update() {
-        if (Input.GetKeyDown("right"))
-            print("space key was pressed");
-        
+    private void EvaluateMovement( InputController.ButtonType button )
+    {
+        switch( button )
+        {
+            case InputController.ButtonType.Up: 
+            {
+                movementVector += Vector2.up * playerXspeed * Time.deltaTime;
+            } break;
+
+            case InputController.ButtonType.Down: 
+            {
+                movementVector -= Vector2.up * playerXspeed * Time.deltaTime;
+            } break;
+
+            case InputController.ButtonType.Left: 
+            {
+                movementVector -= Vector2.right * playerXspeed * Time.deltaTime;
+            } break;
+
+            case InputController.ButtonType.Right: 
+            {
+                movementVector += Vector2.right * playerXspeed * Time.deltaTime;
+            } break;
+        }
+    }
+
+    private void EvaluateView( InputController.ButtonType button )
+    {
+        switch( button )
+        {
+            case InputController.ButtonType.RLeft: 
+            {
+                yRotation -= 1f * rotationSpeed * Time.deltaTime;
+            } break;
+
+            case InputController.ButtonType.RRight:
+            {
+                yRotation += 1f * rotationSpeed * Time.deltaTime;
+            } break;
+        }
+    }
+
+    //event handlers
+    private void OnButtonDown( InputController.ButtonType button )
+    {   
+        EvaluateMovement( button );
+        EvaluateView( button );
+
+        switch( button )
+        {
+            case InputController.ButtonType.Y:
+            {
+                // REVEAL PROGRESS
+                if( countdownG == 0f )
+                {
+                    alienGizmo.GetComponent<Renderer>().enabled = true;
+                    //TO DO change to coroutine
+                    countdownG = 1f * Time.deltaTime;
+
+                    StartCoroutine( "DoGizmoParticleEffect" );
+
+                    /*
+                    foreach( GameObject grass in GameObject.FindGameObjectsWithTag( "Grass" ) )
+                    {
+                        //grass = GameObject.Find("Grass(Clone)");
+                        grass.SendMessage( "ChangeLayer" );
+                        //grass.tag = "Grass";
+                    }
+                    */
+                }
+            } break;
+
+            case InputController.ButtonType.LeftShoulder:
+            {
+                // CREATE DECOY
+                if (activeClone==false){
+                    GetComponent<AudioSource>().PlayOneShot(DecoyDeploymentSound);
+                    GameObject clone = Instantiate(decoy, new Vector3(transform.position.x,
+                        transform.position.y-1,
+                        transform.position.z),
+                        Quaternion.identity) as GameObject;
+
+                    GameObject clonePart = Instantiate(decoyPart, new Vector3(transform.position.x,
+                        transform.position.y,
+                        transform.position.z),
+                        Quaternion.identity) as GameObject;
+                    clonePart.tag = "DustDecoy";
+                    //clonePart.transform.Rotate  (270,0,0);
+                    //clone.transform.Rotate  (270,0,0);
+                    activeClone = true;
+                }
+            } break;
+        }
+    }
+
+    private void OnButtonHeld( InputController.ButtonType button )
+    {   
+        EvaluateMovement( button );
+        EvaluateView( button );
+    }
+
+    private void OnButtonUp( InputController.ButtonType button )
+    {
+
+    }	
+	//end event handlers	
+
+    private IEnumerator DoGizmoParticleEffect()
+    {
+        if( gizmoParticleSystemPrefab == null )
+            yield break;
+
+        GameObject go = Instantiate( gizmoParticleSystemPrefab, transform.position, Quaternion.AngleAxis( -90f, Vector3.right ) ) as GameObject;
+
+        ParticleSystem particleSystem = go.GetComponent<ParticleSystem>();
+
+        if( particleSystem )
+        {
+            yield return new WaitForSeconds( particleSystem.duration );
+        }
+
+        Destroy( go );
     }
 }
-    */
-
- 
-

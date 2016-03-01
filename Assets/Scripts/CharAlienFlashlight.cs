@@ -56,7 +56,7 @@ public class CharAlienFlashlight : MonoBehaviour {
 	void Update () {
 
 
-		Debug.Log (textureColorWin.a);
+		//Debug.Log (textureColorWin.a);
 
 		if (counter > 0){
 			counter -= freezeCountDown * Time.deltaTime;
