@@ -52,8 +52,8 @@ public class GameManager : MonoBehaviour {
 			//counter --;
 			//if(counter <= 0){
 				crushPercent = true;
-				Debug.Log (plantsToCrush +" plant to crush");
-				Debug.Log (plantsToCrushEndPerc +" percentage");
+				//Debug.Log (plantsToCrush +" plant to crush");
+				//Debug.Log (plantsToCrushEndPerc +" percentage");
 			//}
 		}
 	}
@@ -62,16 +62,18 @@ public class GameManager : MonoBehaviour {
 		//Debug.Log ("FINISH");
 		//print(plantsToCrush);
 		//print (plantsToCrush);
-		Debug.Log(plantsToCrush.ToString() + " plants left");
+		//Debug.Log(plantsToCrush.ToString() + " plants left");
 		if(Input.GetKeyDown(KeyCode.Escape)){
 			Application.Quit(); }
 
+        /*
 		if(Input.GetKeyDown(KeyCode.W)){
 			mothership.SetActive(true);
 			finish.SetActive(true);
 			alien.SendMessage("ChangeWinner");
 			a51.SendMessage ("ChangeWinner");
 		}
+  */      
 
 		if (GrassSpawner.grassGenerated && crushPercent == false){
 			CalculatePercentages();

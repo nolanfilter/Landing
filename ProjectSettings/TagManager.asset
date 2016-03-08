@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Grass
+  - DustDecoy
+  - Alien
+  - 
   layers:
   - Default
   - TransparentFX
@@ -13,17 +17,17 @@ TagManager:
   - UI
   - 
   - 
-  - HumanQuad
+  - AlienBack
   - AlienQuad
+  - HumanBack
+  - HumanQuad
+  - MapGizmosAlien
+  - CropCircle
   - Plants
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - MapGizmosA51
+  - SKYshpere
+  - Props
+  - GizmoAlienTrapped
   - 
   - 
   - 

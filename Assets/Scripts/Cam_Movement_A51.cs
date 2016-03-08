@@ -31,7 +31,7 @@ public class Cam_Movement_A51 : MonoBehaviour {
 	void Update () {
 		//anim.ResetTrigger("counter");
 		
-		
+		/*
 		float tiltAroundX = Input.GetAxis("RJoy Y2") * tiltAngle;
 		//tiltAroundX *= Time.deltaTime;
 		
@@ -39,9 +39,6 @@ public class Cam_Movement_A51 : MonoBehaviour {
 			if(transform.localEulerAngles.x <= 25 || transform.localEulerAngles.x >= -25){
 				Quaternion target = Quaternion.Euler(tiltAroundX, 0, 0);
 				transform.localRotation = Quaternion.Slerp(transform.localRotation, target, Time.deltaTime * smooth);
-				
-				/*if(Input.GetAxis("RJoy Y2") > 0){ direction = 1;}
-				else { direction = -1;}*/
 			}
 		}
 		
@@ -51,6 +48,7 @@ public class Cam_Movement_A51 : MonoBehaviour {
 		}
 		//anim.SetBool("counter", false);
 
+*/
 		if(mothershipView){
 			transform.LookAt(mothership);
 		}

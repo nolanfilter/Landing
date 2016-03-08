@@ -69,7 +69,7 @@ public class CharA51Stunned : MonoBehaviour {
 	void OnCollisionEnter(Collision col) {
 		if (col.gameObject.name == "Grass(Clone)"){
 			GameObject plant = col.transform.gameObject;
-			Debug.Log ("turn gizmo on");
+			//Debug.Log ("turn gizmo on");
 			plant.SendMessage("TurnGizmo");
 			
 		}

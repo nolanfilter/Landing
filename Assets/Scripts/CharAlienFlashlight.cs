@@ -56,7 +56,7 @@ public class CharAlienFlashlight : MonoBehaviour {
 	void Update () {
 
 
-		Debug.Log (textureColorWin.a);
+		//Debug.Log (textureColorWin.a);
 
 		if (counter > 0){
 			counter -= freezeCountDown * Time.deltaTime;
@@ -107,6 +107,7 @@ public class CharAlienFlashlight : MonoBehaviour {
 			}
 		}
 
+        /*
 		if(Input.GetKeyDown(KeyCode.W)){winner = true;}
 		if(winner){
 			Invoke ("StickToPosition",0);
@@ -116,6 +117,7 @@ public class CharAlienFlashlight : MonoBehaviour {
 				Application.LoadLevel (levelToLoad);
 			}
 		}
+  */      
 
 		cameraAlien.SendMessage("Activate_Bloom", counter);
 	}
