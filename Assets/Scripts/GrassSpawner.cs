@@ -70,7 +70,7 @@ public class GrassSpawner : MonoBehaviour {
 		}
 		grassGenerated = true;
 
-
+        /*
         string layout = "";
         for( int i = 0; i < board.Length; i++ )
         {
@@ -78,6 +78,7 @@ public class GrassSpawner : MonoBehaviour {
         }
 
         Debug.Log( layout );
+        */
 	}
 	
 	// Update is called once per frame

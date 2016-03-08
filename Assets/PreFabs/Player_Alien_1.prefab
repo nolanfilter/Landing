@@ -54,24 +54,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!1 &125802
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 418890}
-  - 33: {fileID: 3313478}
-  - 23: {fileID: 2382894}
-  - 95: {fileID: 9574262}
-  m_Layer: 0
-  m_Name: AlienStunnedCutout2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &134938
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,7 +66,6 @@ GameObject:
   - 65: {fileID: 6573940}
   - 23: {fileID: 2326214}
   - 54: {fileID: 5410602}
-  - 114: {fileID: 11406346}
   - 114: {fileID: 11494240}
   - 114: {fileID: 11442262}
   - 114: {fileID: 11476594}
@@ -176,18 +157,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &418890
-Transform:
-  m_ObjectHideFlags: 1
+--- !u!1 &187772
+GameObject:
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 125802}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
-  m_LocalPosition: {x: -0.17547607, y: -0.38589022, z: -0.17056613}
-  m_LocalScale: {x: 0.236817, y: 0.236817, z: 0.236817}
-  m_Children: []
-  m_Father: {fileID: 448472}
-  m_RootOrder: 5
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 454026}
+  - 33: {fileID: 3300222}
+  - 23: {fileID: 2321452}
+  - 95: {fileID: 9528502}
+  m_Layer: 0
+  m_Name: alienModelStunned
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &431104
 Transform:
   m_ObjectHideFlags: 1
@@ -227,11 +214,23 @@ Transform:
   - {fileID: 457216}
   - {fileID: 465498}
   - {fileID: 455794}
-  - {fileID: 418890}
+  - {fileID: 454026}
   - {fileID: 441336}
   - {fileID: 431104}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &454026
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187772}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000016292068}
+  m_LocalPosition: {x: -0.17547607, y: -0.38589022, z: -0.17056613}
+  m_LocalScale: {x: 0.236817, y: 0.236817, z: 0.236817}
+  m_Children: []
+  m_Father: {fileID: 448472}
+  m_RootOrder: 5
 --- !u!4 &455794
 Transform:
   m_ObjectHideFlags: 1
@@ -352,6 +351,32 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!23 &2321452
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187772}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 470a98d4478d34987be57c0e8bc8bf96, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 1
+  m_ReflectionProbeUsage: 1
+  m_ProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!23 &2326214
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -456,32 +481,13 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!23 &2382894
-MeshRenderer:
+--- !u!33 &3300222
+MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 125802}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_Materials:
-  - {fileID: 2100000, guid: 195c15f3615e7443f940d3fea75592f8, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
-  m_ProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_GameObject: {fileID: 187772}
+  m_Mesh: {fileID: 4300000, guid: 6cfb2e6f52ba444dbb45cb13defe149c, type: 3}
 --- !u!33 &3303384
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -496,13 +502,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 108786}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!33 &3313478
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 125802}
-  m_Mesh: {fileID: 4300000, guid: ea53b43a15aa14e39a986310c555f834, type: 3}
 --- !u!33 &3342828
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -838,6 +837,23 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 172368}
   m_Enabled: 1
+--- !u!95 &9528502
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187772}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 6cfb2e6f52ba444dbb45cb13defe149c, type: 3}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!95 &9545838
 Animator:
   serializedVersion: 3
@@ -868,23 +884,6 @@ Animator:
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
---- !u!95 &9574262
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 125802}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: ea53b43a15aa14e39a986310c555f834, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -922,34 +921,6 @@ Light:
   m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_AreaSize: {x: 1, y: 1}
---- !u!114 &11406346
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 134938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60a10bd9951394868a16941f77da6efb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gizmoParticleSystemPrefab: {fileID: 175794, guid: 70682b4c4605c42888cc9d5be54a41bd,
-    type: 2}
-  rotationSpeed: 100
-  playerXspeed: 11
-  moveZ: 0
-  moveX: 0
-  particlesDust: {fileID: 136066}
-  alienCutout: {fileID: 162910}
-  alienGizmo: {fileID: 160974}
-  decoy: {fileID: 100000, guid: fc333a41b07114c30ae65da8ff1e049d, type: 2}
-  decoyPart: {fileID: 100000, guid: 184e3e0be39c949af91ecdc6e9079487, type: 2}
-  maxX: 51
-  minX: -72
-  maxZ: 125
-  minZ: -6
-  DecoyDeploymentSound: {fileID: 8300000, guid: 0a6737367e84748868318e02e570217c,
-    type: 3}
 --- !u!114 &11408596
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1050,7 +1021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a360ebce78a124b098b5033a7b0b9709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alienStunned: {fileID: 125802}
+  alienStunned: {fileID: 187772}
   alienCutOut: {fileID: 162910}
   alienGrabbed: {fileID: 0}
   lives2: {fileID: 2800000, guid: d579cbcdb775347d9b4dc4ca960e4c97, type: 3}
@@ -1095,8 +1066,6 @@ MonoBehaviour:
     type: 2}
   rotationSpeed: 100
   playerXspeed: 11
-  moveZ: 0
-  moveX: 0
   particlesDust: {fileID: 136066}
   modelObject: {fileID: 162910}
   gizmoObject: {fileID: 160974}
