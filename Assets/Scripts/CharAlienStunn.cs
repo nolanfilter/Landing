@@ -18,12 +18,13 @@ public class CharAlienStunn : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        /*
 		if (Input.GetAxis("R_Trigger")>.5f){
 			//Debug.Log("x");
 			buttonDown = true;
 			alienCutout.SendMessage("Hit", SendMessageOptions.DontRequireReceiver);
 		} 
+  */      
 	
 	}
 

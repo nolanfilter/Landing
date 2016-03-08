@@ -16,6 +16,14 @@ public class InputController : MonoBehaviour {
     public delegate void ButtonUpEventHandler( InputController.ButtonType button );
     public event ButtonUpEventHandler OnButtonUp;
 
+    public enum PlayerNumber
+    {
+        Player1 = 0,
+        Player2 = 1,
+        Invalid = 2,
+    }
+    public PlayerNumber currentPlayerNumber = PlayerNumber.Invalid;
+
     public enum ButtonType
     {
         Up = 0,
@@ -39,7 +47,7 @@ public class InputController : MonoBehaviour {
         Start = 18,
         Select = 19,
         Invalid = 20,
-  }
+    }
 
     private string verticalAxisString;
     private string horizontalAxisString;
@@ -55,10 +63,20 @@ public class InputController : MonoBehaviour {
     private Dictionary<ButtonType, bool> currentButtonList  = new Dictionary<ButtonType, bool>();
     private Dictionary<ButtonType, bool> oldButtonList = new Dictionary<ButtonType, bool>();
 
+    //TO DO reevaluate string input type
+    private static String KeyboardInputString = "Keyboard"; 
+
     private String currentInputType = "Invalid";
 
     void Awake()
     {
+        if( currentPlayerNumber == PlayerNumber.Invalid )
+        {
+            Debug.LogError( "Player Number on " + gameObject.name + " not set!" );
+            enabled = false;
+            return;
+        }
+
         CheckInputType();
     }
 
@@ -115,7 +133,8 @@ public class InputController : MonoBehaviour {
             oldButtonList[ button ] = currentButtonList[ button ];
         }
 
-        CheckInputType();
+        // TO DO more check for disconnections etc
+        //CheckInputType();
     }
 
     void OnGUI()
@@ -123,16 +142,18 @@ public class InputController : MonoBehaviour {
         if( !debug )
             return;
 
+        float xPos = 10f + Screen.width * 0.5f * (int)currentPlayerNumber;
+
         if( Input.GetJoystickNames().Length > 0 )
         {
-            GUI.Label( new Rect( 10f, 10f, 500f, 500f ), "Found " + Input.GetJoystickNames()[ 0 ] );
+            GUI.Label( new Rect( xPos, 10f, 500f, 500f ), "" + currentPlayerNumber );
         }
         else
         {
-            GUI.Label( new Rect( 10f, 10f, 500f, 500f ), "No joystick found" );
+            GUI.Label( new Rect( xPos, 10f, 500f, 500f ), "No joystick found" );
         }
 
-        GUI.Label( new Rect( 10f, 30f, 500f, 500f ), "Current input type = " + currentInputType );
+        GUI.Label( new Rect( xPos, 30f, 500f, 500f ), "Current input type = " + currentInputType );
 
         float height = 50f;
 
@@ -140,7 +161,7 @@ public class InputController : MonoBehaviour {
         {
             if( currentButtonList[ button ] )
             {
-                GUI.Label( new Rect( 10f, height, 500f, 500f ), "" + button + " held" );
+                GUI.Label( new Rect( xPos, height, 500f, 500f ), "" + button + " held" );
 
                 height += 20f;
             }
@@ -149,31 +170,33 @@ public class InputController : MonoBehaviour {
 
     private void CheckInputType()
     {
+        int number = (int)currentPlayerNumber;
+
         if( Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor )
         {
-            verticalAxisString = "Vertical Mac";
-            horizontalAxisString = "Horizontal Mac";
-            rVerticalAxisString = "RVertical Mac";
-            rHorizontalAxisString = "RHorizontal Mac";
-            leftTriggerAxisString = "Left Trigger Mac";
-            rightTriggerAxisString = "Right Trigger Mac";
+            verticalAxisString = "Vertical Mac " + number;
+            horizontalAxisString = "Horizontal Mac " + number;
+            rVerticalAxisString = "RVertical Mac " + number;
+            rHorizontalAxisString = "RHorizontal Mac " + number;
+            leftTriggerAxisString = "Left Trigger Mac " + number;
+            rightTriggerAxisString = "Right Trigger Mac " + number;
         }
         else if( Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor )
         {
-            verticalAxisString = "Vertical PC";
-            horizontalAxisString = "Horizontal PC";
-            rVerticalAxisString = "RVertical PC";
-            rHorizontalAxisString = "RHorizontal PC";
-            leftTriggerAxisString = "Left Trigger PC";
-            rightTriggerAxisString = "Right Trigger PC";
+            verticalAxisString = "Vertical PC " + number;
+            horizontalAxisString = "Horizontal PC " + number;
+            rVerticalAxisString = "RVertical PC " + number;
+            rHorizontalAxisString = "RHorizontal PC " + number;
+            leftTriggerAxisString = "Left Trigger PC " + number;
+            rightTriggerAxisString = "Right Trigger PC " + number;
         }
-            
-        if( ( Input.GetJoystickNames().Length > 0 && currentInputType != Input.GetJoystickNames()[0] ) ||
-            ( Input.GetJoystickNames().Length == 0 && currentInputType != "Keyboard" ) )
+          
+        if( ( Input.GetJoystickNames().Length > number && currentInputType != Input.GetJoystickNames()[ number ] ) ||
+            ( Input.GetJoystickNames().Length == 0 && currentInputType != KeyboardInputString ) )
         {
-            if( Input.GetJoystickNames().Length > 0 && Input.GetJoystickNames()[0] != "" )
+            if( Input.GetJoystickNames().Length > number && Input.GetJoystickNames()[ number ] != "" )
             {
-                switch( Input.GetJoystickNames()[0] )
+                switch( Input.GetJoystickNames()[ number ] )
                 {
                     //PS3
                     case "Sony PLAYSTATION(R)3 Controller":
@@ -196,56 +219,56 @@ public class InputController : MonoBehaviour {
                     //XBOX 360 on Windows
                     case "Controller (XBOX 360 For Windows)":
                     {
-                        codes[ (int)ButtonType.Up ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.Down ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.Left ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.Right ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.RUp ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.RDown ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.RLeft ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.RRight ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.L3 ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.LeftTrigger ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.R3 ] = (KeyCode)( (int)KeyCode.Joystick1Button9 );
-                        codes[ (int)ButtonType.RightTrigger ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
-                        codes[ (int)ButtonType.LeftShoulder ] = (KeyCode)( (int)KeyCode.Joystick1Button4 );
-                        codes[ (int)ButtonType.RightShoulder ] = (KeyCode)( (int)KeyCode.Joystick1Button5 );
+                        codes[ (int)ButtonType.Up ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.Down ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.Left ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.Right ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.RUp ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.RDown ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.RLeft ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.RRight ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.L3 ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.LeftTrigger ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.R3 ] = (KeyCode)( (int)KeyCode.Joystick1Button9 + number * 20 );
+                        codes[ (int)ButtonType.RightTrigger ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
+                        codes[ (int)ButtonType.LeftShoulder ] = (KeyCode)( (int)KeyCode.Joystick1Button4 + number * 20 );
+                        codes[ (int)ButtonType.RightShoulder ] = (KeyCode)( (int)KeyCode.Joystick1Button5 + number * 20 );
 
-                        codes[ (int)ButtonType.Start ] = (KeyCode)( (int)KeyCode.Joystick1Button7 );
-                        codes[ (int)ButtonType.A ] = (KeyCode)( (int)KeyCode.Joystick1Button0 );
-                        codes[ (int)ButtonType.B ] = (KeyCode)( (int)KeyCode.Joystick1Button1 );
-                        codes[ (int)ButtonType.X ] = (KeyCode)( (int)KeyCode.Joystick1Button2 );
-                        codes[ (int)ButtonType.Y ] = (KeyCode)( (int)KeyCode.Joystick1Button3 );
+                        codes[ (int)ButtonType.Start ] = (KeyCode)( (int)KeyCode.Joystick1Button7 + number * 20 );
+                        codes[ (int)ButtonType.A ] = (KeyCode)( (int)KeyCode.Joystick1Button0 + number * 20 );
+                        codes[ (int)ButtonType.B ] = (KeyCode)( (int)KeyCode.Joystick1Button1 + number * 20 );
+                        codes[ (int)ButtonType.X ] = (KeyCode)( (int)KeyCode.Joystick1Button2 + number * 20 );
+                        codes[ (int)ButtonType.Y ] = (KeyCode)( (int)KeyCode.Joystick1Button3 + number * 20 );
                       } break;
 
                     //XBOX 360 on OSX
                     case "©Microsoft Corporation Controller": case "©Microsoft Corporation Xbox 360 Wired Controller":
                     {
-                        codes[ (int)ButtonType.Up ] = (KeyCode)( (int)KeyCode.Joystick1Button5 );
-                        codes[ (int)ButtonType.Down ] = (KeyCode)( (int)KeyCode.Joystick1Button6 );
-                        codes[ (int)ButtonType.Left ] = (KeyCode)( (int)KeyCode.Joystick1Button7 );
-                        codes[ (int)ButtonType.Right ] = (KeyCode)( (int)KeyCode.Joystick1Button8 );
-                        codes[ (int)ButtonType.RUp ] = (KeyCode)( (int)KeyCode.Joystick1Button0 );
-                        codes[ (int)ButtonType.RDown ] = (KeyCode)( (int)KeyCode.Joystick1Button0 );
-                        codes[ (int)ButtonType.RLeft ] = (KeyCode)( (int)KeyCode.Joystick1Button0 );
-                        codes[ (int)ButtonType.RRight ] = (KeyCode)( (int)KeyCode.Joystick1Button0 );
-                        codes[ (int)ButtonType.L3 ] = (KeyCode)( (int)KeyCode.Joystick1Button11 );
-                        codes[ (int)ButtonType.LeftTrigger ] = (KeyCode)( (int)KeyCode.Joystick1Button0 );
-                        codes[ (int)ButtonType.R3 ] = (KeyCode)( (int)KeyCode.Joystick1Button12 );
-                        codes[ (int)ButtonType.RightTrigger ] = (KeyCode)( (int)KeyCode.Joystick1Button0 );
-                        codes[ (int)ButtonType.LeftShoulder ] = (KeyCode)( (int)KeyCode.Joystick1Button13 );
-                        codes[ (int)ButtonType.RightShoulder ] = (KeyCode)( (int)KeyCode.Joystick1Button14 );
+                        codes[ (int)ButtonType.Up ] = (KeyCode)( (int)KeyCode.Joystick1Button5 + number * 20 );
+                        codes[ (int)ButtonType.Down ] = (KeyCode)( (int)KeyCode.Joystick1Button6 + number * 20 );
+                        codes[ (int)ButtonType.Left ] = (KeyCode)( (int)KeyCode.Joystick1Button7 + number * 20 );
+                        codes[ (int)ButtonType.Right ] = (KeyCode)( (int)KeyCode.Joystick1Button8 + number * 20 );
+                        codes[ (int)ButtonType.RUp ] = (KeyCode)( (int)KeyCode.Joystick1Button0 + number * 20 );
+                        codes[ (int)ButtonType.RDown ] = (KeyCode)( (int)KeyCode.Joystick1Button0 + number * 20 );
+                        codes[ (int)ButtonType.RLeft ] = (KeyCode)( (int)KeyCode.Joystick1Button0 + number * 20 );
+                        codes[ (int)ButtonType.RRight ] = (KeyCode)( (int)KeyCode.Joystick1Button0 + number * 20 );
+                        codes[ (int)ButtonType.L3 ] = (KeyCode)( (int)KeyCode.Joystick1Button11 + number * 20 );
+                        codes[ (int)ButtonType.LeftTrigger ] = (KeyCode)( (int)KeyCode.Joystick1Button0 + number * 20 );
+                        codes[ (int)ButtonType.R3 ] = (KeyCode)( (int)KeyCode.Joystick1Button12 + number * 20 );
+                        codes[ (int)ButtonType.RightTrigger ] = (KeyCode)( (int)KeyCode.Joystick1Button0 + number * 20 );
+                        codes[ (int)ButtonType.LeftShoulder ] = (KeyCode)( (int)KeyCode.Joystick1Button13 + number * 20 );
+                        codes[ (int)ButtonType.RightShoulder ] = (KeyCode)( (int)KeyCode.Joystick1Button14 + number * 20 );
 
-                        codes[ (int)ButtonType.Select ] = (KeyCode)( (int)KeyCode.Joystick1Button10 );
-                        codes[ (int)ButtonType.Start ] = (KeyCode)( (int)KeyCode.Joystick1Button9 );
-                        codes[ (int)ButtonType.A ] = (KeyCode)( (int)KeyCode.Joystick1Button16 );
-                        codes[ (int)ButtonType.B ] = (KeyCode)( (int)KeyCode.Joystick1Button17 );
-                        codes[ (int)ButtonType.X ] = (KeyCode)( (int)KeyCode.Joystick1Button18 );
-                        codes[ (int)ButtonType.Y ] = (KeyCode)( (int)KeyCode.Joystick1Button19 );
+                        codes[ (int)ButtonType.Select ] = (KeyCode)( (int)KeyCode.Joystick1Button10 + number * 20 );
+                        codes[ (int)ButtonType.Start ] = (KeyCode)( (int)KeyCode.Joystick1Button9 + number * 20 );
+                        codes[ (int)ButtonType.A ] = (KeyCode)( (int)KeyCode.Joystick1Button16 + number * 20 );
+                        codes[ (int)ButtonType.B ] = (KeyCode)( (int)KeyCode.Joystick1Button17 + number * 20 );
+                        codes[ (int)ButtonType.X ] = (KeyCode)( (int)KeyCode.Joystick1Button18 + number * 20 );
+                        codes[ (int)ButtonType.Y ] = (KeyCode)( (int)KeyCode.Joystick1Button19 + number * 20 );
                     } break;
                 }
 
-                currentInputType = Input.GetJoystickNames()[0];
+                currentInputType = Input.GetJoystickNames()[ number ];
             }
             else
             {
@@ -270,7 +293,7 @@ public class InputController : MonoBehaviour {
                 codes[ (int)ButtonType.X ] = KeyCode.X;
                 codes[ (int)ButtonType.Y ] = KeyCode.Y;
 
-                currentInputType = "Keyboard";
+                currentInputType = KeyboardInputString;
             }
 
             currentButtonList.Clear();

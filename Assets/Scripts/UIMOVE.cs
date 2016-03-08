@@ -18,7 +18,7 @@ public class UIMOVE : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        /*
 		buttonDown = Input.GetButton("R_Bumper");
 
 		textureColor.a -= 1f * Time.deltaTime;
@@ -29,7 +29,7 @@ public class UIMOVE : MonoBehaviour {
 			GetComponent<GUITexture>().color = textureColor;
 			//print("crushed anim");
 		}
-
+*/
 	
 	}
 }

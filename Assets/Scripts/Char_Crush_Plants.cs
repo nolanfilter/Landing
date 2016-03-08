@@ -14,7 +14,7 @@ public class Char_Crush_Plants : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        /*
 		buttonDown = Input.GetButton("R_Bumper");
 		if(buttonDown == true){
 			GetComponent<AudioSource>().clip = CuttingGrass;
@@ -27,6 +27,7 @@ public class Char_Crush_Plants : MonoBehaviour {
 		//if(buttonDown = false){
 		//	audio.Stop();
 		//}
+  */      
 	}
 
 	void OnCollisionStay(Collision col) {
