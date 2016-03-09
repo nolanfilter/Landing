@@ -3290,6 +3290,10 @@ Prefab:
       propertyPath: alien
       value: 
       objectReference: {fileID: 1431597735}
+    - target: {fileID: 2035238, guid: 7def2d64179694d289fc078ed3056ab4, type: 2}
+      propertyPath: m_CullingMask.m_Bits
+      value: 4294965247
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7def2d64179694d289fc078ed3056ab4, type: 2}
   m_IsPrefabParent: 0
@@ -6662,7 +6666,7 @@ Transform:
   - {fileID: 254365786}
   - {fileID: 118506420}
   m_Father: {fileID: 0}
-  m_RootOrder: 30
+  m_RootOrder: 32
 --- !u!1 &1862884863
 GameObject:
   m_ObjectHideFlags: 0
